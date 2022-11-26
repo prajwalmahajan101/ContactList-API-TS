@@ -1,0 +1,8 @@
+app:
+  port: # some PORT                -----> number (Optional)
+  db:
+    url: # some Db url             -----> string
+    dbName: #some Db name          -----> string
+  secrets:
+    jwtSecret: #some secret         ----> string
+    saltRound: #some round for salt ----> number
