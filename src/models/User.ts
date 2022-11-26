@@ -57,11 +57,14 @@ export class User{
             getConfig().secrets.saltRound
         );
         validatedUser.password = hashedPassword;
+        delete validatedUser.id;
         let result  = await getDb().collection(collectionName).insertOne(validatedUser);
         if(!result.acknowledged){
             logger.error("User registration failed");
             throw new Error("User registration failed");
         }
+        logger.info("User Created")
+        this.id = result.insertedId.toHexString()
         delete this.password;
         return this;
     }
