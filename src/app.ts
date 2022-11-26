@@ -10,11 +10,13 @@ const main = async ():Promise<void> =>{
         await loadConfig();
         await establishConnection();
         let app = Express();
+        app.use(Express.json());
         app.use(cors(
             {
                 origin:"*"
             }
         ))
+
         app.use("/api",ApiRoutes);
 
         app.listen(getConfig().port || 8000,()=>{

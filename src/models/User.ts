@@ -39,7 +39,7 @@ export class User{
 
     async #validate():Promise<User>{
         const UserSchema = Joi.object({
-            id:Joi.string().allow(null).optional,
+            id:Joi.string().allow(null).optional(),
             fullName:Joi.string().required(),
             phNumber:Joi.string().length(10).required(),
             password:Joi.string().required(),
