@@ -120,7 +120,11 @@ export class User{
         return user;
     }
     static async getUserById(id:string){
-        let user = getDb().collection(collectionName).findOne({_id:new ObjectId(id)});
+        let user = getDb().collection(collectionName).findOne({_id:new ObjectId(id)},{
+            projection:{
+                password:0
+            }
+        });
         return user;
     }
 

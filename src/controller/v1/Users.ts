@@ -38,11 +38,10 @@ export const login = async (req:Request,res:Response,next:NextFunction)=>{
 }
 
 
-export const deleteUser =async  (req:AuthenticatedRequest,res:Response,next:NextFunction)=>{
+export const deleteUser = async  (req:AuthenticatedRequest,res:Response,next:NextFunction)=>{
     try {
         const contactedDeleted = await Contact.deleteAllcontactOfUser(req.userId as string);
         const deleted = await User.deleteUser(req.userId as string);
-
         return res.status(200).json({
             msg:"User deleted",
             contactedDeleted,
@@ -51,5 +50,19 @@ export const deleteUser =async  (req:AuthenticatedRequest,res:Response,next:Next
 
     }catch(err){
         next(err);
+    }
+}
+
+export const getLoggedInUser = async  (req:AuthenticatedRequest,res:Response,next:NextFunction)=>{
+    try {
+        let userId = req.userId as string;
+        let user = await User.getUserById(userId);
+        res.status(200).json({
+            msg:"Logged In User fetched",
+            user
+        })
+
+    }catch(e){
+        next(e)
     }
 }
