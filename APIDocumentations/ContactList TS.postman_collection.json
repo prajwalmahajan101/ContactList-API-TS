@@ -102,7 +102,64 @@
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "Update User Profile",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fullName\":\"Prajwal Mahajan\",\r\n    \"phNumber\":\"9899899890\"\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/users",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Reset Password For the User",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"password\":\"abc\",\r\n    \"newPassword\":\"abcd\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/users/reset_password",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"reset_password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User and All Its contactList",
 							"request": {
 								"auth": {
 									"type": "bearer",

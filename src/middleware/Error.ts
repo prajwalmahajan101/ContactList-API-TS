@@ -10,7 +10,7 @@ export class customError extends Error{
 
 export const errorHandler = (err:customError,req:Request,res:Response,next:NextFunction) =>{
     logger.error(err.message);
-    res.status(err.statusCode).json({
+    res.status(err.statusCode?err.statusCode:500).json({
         error : err.message
     })
 }

@@ -5,6 +5,7 @@ import { getDb } from"../utils/db";
 import { sign, verify} from "jsonwebtoken";
 import logger from "../utils/logger";
 import { ObjectId } from "mongodb";
+import {customError} from "../middleware/Error";
 
 export const collectionName = "users";
 
@@ -92,8 +93,7 @@ export class User{
             phNumber,
         });
         if(!result){
-            logger.info(`User Not Found with phone number : ${phNumber}`);
-            throw new Error("User Not Found");
+            throw new customError("User Not Found",400);
         }
         let user = new User(
             result._id.toHexString(),
@@ -105,8 +105,7 @@ export class User{
         )
         let isValid = await compare(password,user.password!);
         if (! isValid){
-            logger.info("Invalid Password");
-            throw new Error("Invalid Password");
+            throw new customError("Invalid Password",401);
         }
         delete user.password;
         return user;
@@ -116,16 +115,50 @@ export class User{
         return decodedToken as jwtPayload;
     }
     static async deleteUser(id:string){
-        let user = getDb().collection(collectionName).findOneAndDelete({_id:new ObjectId(id)});
+        let user = await getDb().collection(collectionName).findOneAndDelete({_id:new ObjectId(id)});
         return user;
     }
     static async getUserById(id:string){
-        let user = getDb().collection(collectionName).findOne({_id:new ObjectId(id)},{
+        let user = await getDb().collection(collectionName).findOne({_id:new ObjectId(id)},{
             projection:{
                 password:0
             }
         });
         return user;
     }
+
+    static async updateProfile(id:string,body:object){
+        let user = await getDb().collection(collectionName).findOneAndUpdate(
+            {_id:new ObjectId(id)},
+            {
+                $set: body
+            },
+            {
+                projection:{
+                    password:0,
+                },
+                returnDocument:"after",
+            }
+        );
+        return user;
+    }
+
+    static async resetPassword(id:string,password:string,new_password:string) {
+        let user = await getDb().collection(collectionName).findOne({_id:new ObjectId(id)});
+        if(!user){
+            throw new customError("User Don't exist",401);
+        }
+        let isValid = await compare(password,user.password!);
+        if ( ! isValid ){
+            throw new customError("Invalid Password",401);
+        }
+        let hashedPassword = await hash(
+            new_password!,
+            getConfig().secrets.saltRound
+        );
+        let updatedUser = await this.updateProfile(id,{password:hashedPassword})
+        return updatedUser;
+    }
+
 
 }
