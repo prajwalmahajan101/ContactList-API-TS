@@ -1,7 +1,7 @@
 import  configModule from "config";
 import Joi from "joi";
 import logger from "./logger";
-
+import { customError } from "../middleware/Error";
 
 export interface AppConfig {
     port: number,
@@ -42,7 +42,7 @@ export const loadConfig = async () =>{
 export const getConfig = () =>{
     if (!config){
         logger.error("Config is not loaded")
-        throw new Error("Config is not loaded")
+        throw new customError("Config is not loaded",400)
     }
     return config;
 }

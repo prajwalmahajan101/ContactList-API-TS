@@ -1,6 +1,5 @@
 import {NextFunction, Request, Response} from "express";
 import { User } from "../../models/User";
-import logger from "../../utils/logger";
 import {AuthenticatedRequest} from "../../middleware/isAuth";
 import {Contact} from "../../models/Contact";
 
@@ -14,7 +13,6 @@ export const create = async (req:Request,res:Response,next:NextFunction)=>{
             user: createdUser
         });
     }catch(err){
-        logger.error(`Error occurred while creating the user ${err}`)
         next(err);
     }
 }
@@ -31,7 +29,6 @@ export const login = async (req:Request,res:Response,next:NextFunction)=>{
             }
         })
     }catch(err){
-        logger.error(`User`)
         next(err);
     }
 

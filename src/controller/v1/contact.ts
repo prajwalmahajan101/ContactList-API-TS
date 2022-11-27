@@ -1,7 +1,7 @@
 import { Contact } from "../../models/Contact";
 import { Response,NextFunction } from "express";
 import { AuthenticatedRequest } from "../../middleware/isAuth";
-import logger from "../../utils/logger";
+
 interface Query{
     user?:string,
     fullName?:Object,
@@ -20,7 +20,6 @@ export const createContact = async (req:AuthenticatedRequest,res:Response,next:N
             contact
         })
     }catch(err){
-        logger.error(err);
         next(err);
     }
 }
