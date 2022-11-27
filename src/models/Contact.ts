@@ -39,9 +39,9 @@ export class Contact{
         return this;
     }
 
-    static async getContacts(user:string):Promise<any>{
+    static async getContacts(query:object):Promise<any>{
         let contacts = await getDb().collection(collectionName).find(
-            {user},
+            query,
             {
                 projection:{
                     user:0,
