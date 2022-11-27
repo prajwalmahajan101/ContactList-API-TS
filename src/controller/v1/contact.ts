@@ -2,7 +2,6 @@ import { Contact } from "../../models/Contact";
 import { Response,NextFunction } from "express";
 import { AuthenticatedRequest } from "../../middleware/isAuth";
 import logger from "../../utils/logger";
-
 interface Query{
     user:string,
     fullName?:string,
@@ -42,6 +41,54 @@ export const getContacts = async (req:AuthenticatedRequest,res:Response,next:Nex
         res.status(200).json({
             msg:"Contacts Fetched",
             contacts
+        })
+    }catch(err){
+        next(err);
+    }
+}
+
+export const getContactByID = async (req:AuthenticatedRequest,res:Response,next:NextFunction)=>{
+    try{
+        const id = req.params.id as string;
+        const user = req.userId as string;
+        const contact = await Contact.getContactById(user,id);
+        res.status(200).json({
+            msg:"Contact Fetched",
+            contact
+        })
+
+    }catch(err){
+        next(err);
+    }
+}
+
+
+export const deleteContactById =async (req:AuthenticatedRequest,res:Response,next:NextFunction) =>{
+    try{
+        const id = req.params.id as string;
+        const user = req.userId as string;
+        const ids = [id] as [string];
+        const contact = await Contact.deleteContactByIDs(user,ids)
+        res.status(200).json({
+            msg:"Contact Deleted",
+            contact
+        })
+
+    }catch(err){
+        next(err);
+    }
+
+}
+
+export const deleteContactByIDs = async (req:AuthenticatedRequest,res:Response,next:NextFunction) =>{
+    try{
+        const user = req.userId as string;
+        const ids = req.body.ids;
+        // console.log("ids",ids)
+        const contact = await Contact.deleteContactByIDs(user,ids)
+        res.status(200).json({
+            msg:"Contact Deleted",
+            contact
         })
     }catch(err){
         next(err);

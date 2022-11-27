@@ -1,7 +1,7 @@
 import { getDb } from "../utils/db";
 import logger from "../utils/logger";
 import Joi from "joi";
-
+import { ObjectId } from "mongodb";
 export const collectionName = "Contact";
 
 export class Contact{
@@ -30,7 +30,8 @@ export class Contact{
 
     async register():Promise<Contact>{
         let ValidContact = await this.#validate();
-        let result = await getDb().collection(collectionName).insertOne(this);
+        delete ValidContact.id;
+        let result = await getDb().collection(collectionName).insertOne(ValidContact);
         if (!result.acknowledged){
             logger.error("Error while Creating Contact");
             throw new Error("Error while Creating Contact");
@@ -48,10 +49,23 @@ export class Contact{
                 },
             }
         ).toArray();
-        contacts.map(el=>{
-            el.id = el._id;
-            return el;
+        return contacts;
+    }
+
+    static async getContactById(user:string,_id:string):Promise<any>{
+        let contact = await getDb().collection(collectionName).findOne({user,_id:new ObjectId(_id)})
+        console.log(contact)
+        return contact;
+    }
+    static async deleteContactByIDs(user:string,ids:[string]):Promise<any>{
+        let deleteIDs = ids.map(el=>new ObjectId(el));
+        let contacts = await getDb().collection(collectionName).deleteMany({
+            user,
+            _id:{
+                $in:deleteIDs
+            }
         })
+        console.log(contacts);
         return contacts;
     }
 
