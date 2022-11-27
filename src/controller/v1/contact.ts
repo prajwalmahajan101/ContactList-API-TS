@@ -4,8 +4,8 @@ import { AuthenticatedRequest } from "../../middleware/isAuth";
 import logger from "../../utils/logger";
 interface Query{
     user:string,
-    fullName?:string,
-    phNumber?:string
+    fullName?:Object,
+    phNumber?:Object
 }
 
 
@@ -31,10 +31,15 @@ export const getContacts = async (req:AuthenticatedRequest,res:Response,next:Nex
         const query:Query = { user };
         const { fullName, phNumber } = req.query;
         if(fullName){
-            query['fullName']  = fullName as string;
+            query['fullName']  ={
+                "$regex":fullName,
+                '$options' : 'i'
+            }
         }
         if(phNumber){
-            query['phNumber']  = phNumber as string;
+            query['phNumber']  = {
+                "$regex":phNumber,
+            }
         }
         // console.log(query)
         const contacts = await Contact.getContacts(query);
