@@ -13,6 +13,38 @@
 					"name": "User",
 					"item": [
 						{
+							"name": "Get logged In User",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/users/",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "User Login",
 							"request": {
 								"method": "POST",
@@ -68,11 +100,37 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "New Request",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzODIyN2I1N2NiNjI4YmZhNTViNzYzNCIsInBoTnVtYmVyIjoiOTg5OTg5OTg5MCIsImZ1bGxOYW1lIjoiUHJhandhbCBNYWhhamFuIiwiaWF0IjoxNjY5NDc1MjI2LCJleHAiOjE2NzIwNjcyMjZ9.9p1qkfcjLYXsnveDpOfeGqIFh3IZoAbX38Thl7UrKGw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/users",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"response": []
 						}
 					],
-					"auth": {
-						"type": "noauth"
-					},
 					"event": [
 						{
 							"listen": "prerequest",
@@ -104,7 +162,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"fullName\":\"Vipul Mahajan\",\r\n    \"phNumber\":\"98899999\"\r\n}",
+									"raw": "{\r\n    \"fullName\":\"Vipul Office\",\r\n    \"phNumber\":\"98899900\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -143,12 +201,12 @@
 									"query": [
 										{
 											"key": "fullName",
-											"value": "Vipul",
+											"value": "Vipul M",
 											"disabled": true
 										},
 										{
 											"key": "phNumber",
-											"value": "8827029585",
+											"value": "900",
 											"disabled": true
 										}
 									]
@@ -175,7 +233,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "6382e434225f5baa1be03e87"
+											"value": "6382fd13d635b0ee6779926c"
 										}
 									]
 								}
@@ -202,6 +260,41 @@
 										{
 											"key": "id",
 											"value": "6382e434225f5baa1be03e87"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit Contact By Id",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fullName\":\"Ofice Vipul 1\",\r\n    \"phNumber\":\"98889900\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/contacts/:id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"contacts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6383161e10b6b3d212908351"
 										}
 									]
 								}
@@ -264,7 +357,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzODIyN2I1N2NiNjI4YmZhNTViNzYzNCIsInBoTnVtYmVyIjoiOTg5OTg5OTg5MCIsImZ1bGxOYW1lIjoiUHJhandhbCBNYWhhamFuIiwiaWF0IjoxNjY5NDc1MjI2LCJleHAiOjE2NzIwNjcyMjZ9.9p1qkfcjLYXsnveDpOfeGqIFh3IZoAbX38Thl7UrKGw",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzODM1MTU5OGE4NjJjYWZhZDk3NWIyYyIsInBoTnVtYmVyIjoiOTg5OTg5OTg5MCIsImZ1bGxOYW1lIjoiUHJhandhbCBNYWhhamFuIiwiaWF0IjoxNjY5NTUwNDQzLCJleHAiOjE2NzIxNDI0NDN9.XKl-Ilt0pAJJIVmRFYI4-HANOlRqu04AVjcNR0cI5XU",
 				"type": "string"
 			}
 		]
