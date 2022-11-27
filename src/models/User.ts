@@ -4,6 +4,7 @@ import { getConfig } from "../utils/config";
 import { getDb } from"../utils/db";
 import { sign, verify} from "jsonwebtoken";
 import logger from "../utils/logger";
+import { ObjectId } from "mongodb";
 
 export const collectionName = "users";
 
@@ -113,6 +114,14 @@ export class User{
     static async validateToken(token : string):Promise<jwtPayload>{
         let decodedToken = await verify(token,getConfig().secrets.jwtSecret);
         return decodedToken as jwtPayload;
+    }
+    static async deleteUser(id:string){
+        let user = getDb().collection(collectionName).findOneAndDelete({_id:new ObjectId(id)});
+        return user;
+    }
+    static async getUserById(id:string){
+        let user = getDb().collection(collectionName).findOne({_id:new ObjectId(id)});
+        return user;
     }
 
 }

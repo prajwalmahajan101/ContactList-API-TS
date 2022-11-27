@@ -17,6 +17,10 @@ export const isAuth = async (req:AuthenticatedRequest,res:Response,next:NextFunc
             next(error);
         }
         let payLoad:jwtPayload = await User.validateToken(token as string);
+        let user =  await User.getUserById(payLoad.id);
+        if(!user) {
+            next(new Error("User already Deleted"))
+        }
         req.userId = payLoad.id;
         req.userFullName = payLoad.fullName;
         req.userPhNumber = payLoad.phNumber;

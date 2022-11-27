@@ -3,7 +3,7 @@ import { Response,NextFunction } from "express";
 import { AuthenticatedRequest } from "../../middleware/isAuth";
 import logger from "../../utils/logger";
 interface Query{
-    user:string,
+    user?:string,
     fullName?:Object,
     phNumber?:Object
 }
@@ -89,12 +89,35 @@ export const deleteContactByIDs = async (req:AuthenticatedRequest,res:Response,n
     try{
         const user = req.userId as string;
         const ids = req.body.ids;
-        // console.log("ids",ids)
         const contact = await Contact.deleteContactByIDs(user,ids)
         res.status(200).json({
             msg:"Contact Deleted",
             contact
         })
+    }catch(err){
+        next(err);
+    }
+}
+
+
+export const editContactById = async (req:AuthenticatedRequest,res:Response,next:NextFunction)=>{
+    try{
+        const user = req.userId as string;
+        const id = req.params.id as string;
+        const { fullName, phNumber } = req.body;
+        const body:Query = {};
+        if( fullName ){
+            body['fullName'] = fullName;
+        }
+        if(phNumber){
+            body['phNumber'] = phNumber;
+        }
+        const contact = await Contact.editContactById(user,id,body);
+        res.status(200).json({
+            msg:"Contact Edited",
+            contact,
+        })
+
     }catch(err){
         next(err);
     }

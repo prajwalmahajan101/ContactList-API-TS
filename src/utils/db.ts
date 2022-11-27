@@ -2,8 +2,8 @@ import { Db, MongoClient } from "mongodb";
 import { getConfig } from "./config";
 import logger from "./logger";
 
-import  { collectionName as UserCollectionName } from "../models/User";
-
+import { collectionName as UserCollectionName } from "../models/User";
+import { collectionName as ContactCollectionName } from "../models/Contact";
 let db:Db;
 
 export const establishConnection = async ():Promise<void>=>{
@@ -25,6 +25,8 @@ export const establishConnection = async ():Promise<void>=>{
         logger.info("Database connection is established");
         db = clientConnection.db(dbName);
         await db.collection(UserCollectionName).createIndex({phNumber: 1}, {unique: true});
+        await db.collection(ContactCollectionName).createIndex({phNumber: 1}, {unique: true});
+        await db.collection(ContactCollectionName).createIndex({user: 1}, {unique: false});
     }catch(e){
         logger.error("Error connecting to the database",e);
         throw e;

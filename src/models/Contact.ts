@@ -69,4 +69,19 @@ export class Contact{
         return contacts;
     }
 
+    static async editContactById(user:string,id:string,body:Object){
+        let contact = await getDb().collection(collectionName).findOneAndUpdate(
+            {user,_id:new ObjectId(id)},
+            {"$set": body},
+            { returnDocument:"after"}
+        )
+        return contact;
+
+    }
+
+    static async deleteAllcontactOfUser(user:string){
+        let deleted = await getDb().collection(collectionName).deleteMany({user});
+        return deleted;
+    }
+
 }
