@@ -1,6 +1,7 @@
 import { Contact } from "../../models/Contact";
 import { Response,NextFunction } from "express";
 import { AuthenticatedRequest } from "../../middleware/isAuth";
+import {customError} from "../../middleware/Error";
 
 interface Query{
     user?:string,
@@ -110,6 +111,9 @@ export const editContactById = async (req:AuthenticatedRequest,res:Response,next
         }
         if(phNumber){
             body['phNumber'] = phNumber;
+        }
+        if(!fullName && !phNumber){
+            next(new customError("fullName or phNumber is needed to update Contact",400))
         }
         const contact = await Contact.editContactById(user,id,body);
         res.status(200).json({
