@@ -1,0 +1,10 @@
+
+
+app:
+  port: ${process.env.port}# some PORT                -----> number (Optional)
+  db:
+    url: ${process.env.url} # some Db url             -----> string
+    dbName: ${process.env.dbName}#some Db name          -----> string
+  secrets:
+    jwtSecret: ${process.env.jwtSecret} #some secret         ----> string
+    saltRound: ${process.env.saltRound}#some round for salt ----> number
